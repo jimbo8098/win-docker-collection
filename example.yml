@@ -1,0 +1,6 @@
+- hosts: all
+  tasks:
+    - name: Test module
+      jimbo8098.win_docker_collection.docker_swarm:
+        advertise_addr: '{{ advertise_addr }}'
+        listen_addr: '{{ listen_addr }}'
