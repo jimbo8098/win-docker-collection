@@ -14,7 +14,7 @@ $spec = @{
         client_cert = @{ type = "str" }
         client_key = @{ type = "str" }
         debug = @{ type = "bool" }
-        default_addr_pool = @{ type = "array" }
+        default_addr_pool = @{ type = "list" }
         dispatcher_heartbeat_period = @{ type = "int" }
         docker_host = @{ type = "str" }
         election_tick = @{ type = "int" }
@@ -22,13 +22,13 @@ $spec = @{
         heartbeat_tick = @{ type = "int" }
         join_token = @{ type = "str" }
         keep_old_snapshots = @{ type = "int" }
-        labels = @{ type = "array" }
+        labels = @{ type = "dict" }
         listen_addr = @{ type = "str" }
         log_entries_for_slow_followers = @{ type = "int" }
         name = @{ type = "str" }
         node_cert_expiry = @{ type = "int" }
         node_id = @{ type = "str" }
-        remote_addrs = @{ type = "array" }
+        remote_addrs = @{ type = "list" }
         rotate_manager_token = @{ type = "bool" }
         rotate_worker_token = @{ type = "bool" }
         signing_ca_cert = @{ type = "str" }
