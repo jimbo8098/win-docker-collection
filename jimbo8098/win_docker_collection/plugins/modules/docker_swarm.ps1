@@ -65,7 +65,8 @@ function Get-State() {
             $status.swarm_active = $true;
         }
     }
+    return $status
 }
 
-$module.Result.values = @{}
+$module.Result.values = Get-State
 $module.ExitJson()
