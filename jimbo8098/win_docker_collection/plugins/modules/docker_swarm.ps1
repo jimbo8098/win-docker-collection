@@ -72,6 +72,7 @@ function Initialize-Swarm {
     return @{
         result = $swarmInitResult
         error = $swarmInitErr
+    }
 }
 
 function Get-State() {
