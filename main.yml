@@ -1,4 +1,7 @@
 - hosts: all
+  gather_facts: false
+  roles:
+    - windows-docker-role
   tasks:
     - name: Ping test
       jimbo8098.win_docker_collection.win_ping_test:
