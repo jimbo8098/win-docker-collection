@@ -1,5 +1,8 @@
 - hosts: all
   tasks:
+    - name: Ping test
+      jimbo8098.win_docker_collection.win_ping_test:
+
     - name: Test module
       jimbo8098.win_docker_collection.docker_swarm:
         advertise_addr: '{{ advertise_addr }}'
