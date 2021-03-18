@@ -67,12 +67,19 @@ function Initialize-Swarm {
         $argumentsToAdd += "--force-new-cluster"
     }
 
-    Invoke-Expression -Command "docker swarm init $($argumentsToAdd -join " ")" -ErrorAction SilentlyContinue -ErrorVariable swarmInitErr -OutVariable swarmInitResult
-    return @{
-        result = $swarmInitResult
-        error = $swarmInitErr
+    try {
+        Invoke-Expression -Command "docker swarm init $($argumentsToAdd -join " ")" -ErrorVariable swarmInitErr -OutVariable swarmInitResult
+        return @{
+            result = $swarmInitResult
+            error = $swarmInitErr
+        }
     }
-
+    catch{
+        return @{
+            result = $swarmInitResult
+            error = $swarmInitErr
+        }
+    }
 }
 
 function Get-State() {
