@@ -74,7 +74,7 @@ function Initialize-Swarm {
         }
     }
     catch{
-        $module.Debug("About to initialize ===============================================")
+
         if($swarmInitErr)
         {
             switch -Wildcard ($swarmInitErr)
@@ -85,15 +85,14 @@ function Initialize-Swarm {
                         message = "Couldn't find system's IP address automatically. Define advertise_addr."
                     }
                 }
-                default {
-                    return @{
-                        status = "error"
-                        message = "An unknown error occurred"
-                        stderr = $swarmInitErr
-                        stdout = $swarmInitResult
-                    }
-                }
             }
+        }
+
+        return @{
+            status = "error"
+            message = "An unknown error occurred"
+            stderr = $swarmInitErr
+            stdout = $swarmInitResult
         }
     }
 }
@@ -146,8 +145,7 @@ $returnValue = @{
 switch($args.state){
     "present" {
         if((Get-State).swarm_active -eq $false) {
-            $initResult = Initialize-Swarm
-            if($initResult.status -eq "error") { Write-AnsibleOutput $initResult }
+            Write-AnsibleOutput Initialize-Swarm
         }
     }
 }
