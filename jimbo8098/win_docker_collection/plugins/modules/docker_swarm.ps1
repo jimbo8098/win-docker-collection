@@ -43,13 +43,15 @@ $spec = @{
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
 
+$dockerCli = "C:\Program Files\Docker\docker.exe"
 function Initialize-Swarm {
     param(
         $advertise_addr,
         $listen_addr
     )
 
-    $initSwarmOutput = docker swarm init --advertise-addr $advertise_addr --listen-addr $listen_addr
+    $module. "${dockerCli} swarm init --advertise-addr ${advertise_addr} --listen-addr ${listen_addr}"
+
 }
 
 function Get-State {
