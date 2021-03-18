@@ -79,18 +79,20 @@ function Initialize-Swarm {
         {
             switch -Wildcard ($swarmInitErr)
             {
-                "*could not find the system's IP address - specify one with --advertise-addr*" {
-                    $module.FailJson("Couldn't find system's IP address automatically. Define advertise_addr.")
-                }
+                #"*could not find the system's IP address - specify one with --advertise-addr*" {
+                #    $module.FailJson("Couldn't find system's IP address automatically. Define advertise_addr.")
+                #}
             }
         }
+        $module.Debug(@"
+        An unhandled error occurred whilst initializing the swarm.
 
-        return @{
-            status = "error"
-            message = "An unknown error occurred"
-            stderr = $swarmInitErr
-            stdout = $swarmInitResult
-        }
+        STDOUT: ${swarmInitResult}
+
+        STDERR: ${swarmInitErr}
+"@)
+
+        $module.FailJson("An unhandled error occurred")
     }
 }
 
@@ -128,23 +130,7 @@ switch($args.state){
     "present" {
         if((Get-State).swarm_active -eq $false) {
             $initResult = Initialize-Swarm
-            $output = $initResult
         }
     }
 }
 $returnValue.after = Get-State
-
-
-switch($output.state){
-    "error" {
-        $module.FailJson($output.message,@{
-            stdout = $output.stdout
-            stderr = $output.stderr
-        })
-        break;
-    }
-    "success" {
-        $module.ExitJson()
-        break;
-    }
-}
