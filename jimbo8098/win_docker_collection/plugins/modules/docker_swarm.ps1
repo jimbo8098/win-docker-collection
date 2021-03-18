@@ -69,6 +69,8 @@ function Initialize-Swarm {
 
     try {
         Invoke-Expression -Command "docker swarm init $($argumentsToAdd -join " ")" -ErrorVariable swarmInitErr -OutVariable swarmInitResult
+        Write-Host $swarmInitResult
+        Write-Host $swarmInitErr
         return @{
             result = $swarmInitResult
             error = $swarmInitErr
