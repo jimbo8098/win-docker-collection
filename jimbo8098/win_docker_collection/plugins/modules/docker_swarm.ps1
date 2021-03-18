@@ -57,12 +57,12 @@ function Get-State() {
     $status.info = $retSwarmStateOutput
     switch($retSwarmStateOutput)
     {
-        'inactive'
+        '"inactive"'
         {
             $status.swarm_active = $false
             break
         }
-        'active'
+        '"active"'
         {
             $status.swarm_active = $true
             break
