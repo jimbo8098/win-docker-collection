@@ -50,20 +50,17 @@ $args = $module.Params
 
 function Initialize-Swarm {
     param(
-        [string] $advertise_addr = $NULL,
-        [string] $listen_addr = $NULL,
-        [bool] $force_new_cluster = $false,
-        [hashtable] $swarm_spec = @{}
+        [hashtable] $initargs
     )
 
     $argumentsToAdd = @();
-    if($advertise_addr -ne ""){
-        $argumentsToAdd += "--advertise-addr ${advertise_addr}"
+    if($initargs.advertise_addr -ne ""){
+        $argumentsToAdd += "--advertise-addr ${initargs.advertise_addr}"
     }
-    if($listen_addr -ne "") {
-        $argumentsToAdd += "--listen-addr ${listen_addr}"
+    if($initargs.listen_addr -ne "") {
+        $argumentsToAdd += "--listen-addr ${initargs.listen_addr}"
     }
-    if($force_new_cluster -ne "") {
+    if($initargs.force_new_cluster -ne "") {
         $argumentsToAdd += "--force-new-cluster"
     }
 
@@ -134,7 +131,11 @@ $returnValue = @{
 switch($args.state){
     "present" {
         if((Get-State).swarm_active -eq $false) {
-            $initResult = Initialize-Swarm -advertise_addr $args.advertise_addr -listen_addr $args.listen_addr -force_new_cluster $args.force_new_cluster
+            $initResult = Initialize-Swarm @{
+                advertise_addr = $args.advertise_addr
+                listen_addr = $args.listen_addr
+                force_new_cluster = $args.force_new_cluster
+            }
         }
     }
 }
