@@ -46,6 +46,7 @@ $spec = @{
 }
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
+$args = $module.Params
 
 function Initialize-Swarm {
     param(
@@ -96,9 +97,15 @@ function Get-State() {
     return $status
 }
 
+switch($args.state){
+    "present" {
+        if((Get-State).swarm_active -eq $false) {
+            Initialize-Swarm
+        }
+    }
+}
+
 $module.Result.values = @{
-    args = $module.Params
-    args2 = $args
     state = Get-State
 }
 
