@@ -47,6 +47,28 @@ $spec = @{
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
 
+function Initialize-Swarm {
+    param(
+        [string] $advertise_addr,
+        [string] $listen_addr,
+        [bool] $force_new_cluster,
+        [hashtable] $swarm_spec
+    )
+
+    $argumentsToAdd = @();
+    if($advertise_addr -ne ""){
+        $argumentsToAdd += "--advertise-addr ${advertise_addr}"
+    }
+    if($listen_addr -ne "") {
+        $argumentsToAdd += "--listen-addr ${listen_addr}"
+    }
+    if($force_new_cluster -ne "") {
+        $argumentsToAdd += "--force-new-cluster"
+    }
+    $swarmInitResult = docker swarm init $($argumentsToAdd -join " ")
+    return $swarmInitResult
+}
+
 function Get-State() {
     param()
     $status = @{
@@ -54,7 +76,6 @@ function Get-State() {
     }
 
     $retSwarmStateOutput = docker info -f '{{json .Swarm.LocalNodeState}}'
-    $status.info = $retSwarmStateOutput
     switch($retSwarmStateOutput)
     {
         '"inactive"'
@@ -75,5 +96,7 @@ function Get-State() {
     return $status
 }
 
-$module.Result.values = Get-State
+$module.Result.values.args = $module.Arguments
+
+$module.Result.values.state = Get-State
 $module.ExitJson()
