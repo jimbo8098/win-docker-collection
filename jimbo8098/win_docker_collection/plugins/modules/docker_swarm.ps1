@@ -82,13 +82,13 @@ function Initialize-Swarm {
                 "*could not find the system's IP address - specify one with --advertise-addr*" {
                     return @{
                         status = "error"
-                        error = "Couldn't find system's IP address automatically. Define advertise_addr."
+                        message = "Couldn't find system's IP address automatically. Define advertise_addr."
                     }
                 }
                 default {
                     return @{
                         status = "error"
-                        error = "An unknown error occurred"
+                        message = "An unknown error occurred"
                         stderr = $swarmInitErr
                         stdout = $swarmInitResult
                     }
@@ -125,18 +125,33 @@ function Get-State() {
     return $status
 }
 
+function Write-AnsibleOutput {
+    param([hashtable] $output)
+    switch($output.state){
+        "error" {
+            $module.FailJson($output.message,@{
+                stdout = $output.stdout
+                stderr = $output.stderr
+            })
+        }
+        "success" {
+            $module.ExitJson()
+        }
+    }
+}
+
 $returnValue = @{
     before = Get-State
 }
 switch($args.state){
     "present" {
         if((Get-State).swarm_active -eq $false) {
-            $returnValue.initialize_result = Initialize-Swarm
+            $initResult = Initialize-Swarm
+            if($initResult.status -eq "error") { Write-AnsibleOutput $initResult }
         }
     }
 }
 $returnValue.after = Get-State
 
 $module.Result.values = $returnValue
-
-$module.ExitJson()
+Write-AnsibleOutput @{state = "success"}
