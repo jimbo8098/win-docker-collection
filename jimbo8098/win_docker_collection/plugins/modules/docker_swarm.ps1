@@ -69,8 +69,6 @@ function Initialize-Swarm {
 
     try {
         Invoke-Expression -Command "docker swarm init $($argumentsToAdd -join " ")" -ErrorVariable swarmInitErr -OutVariable swarmInitResult
-        Write-Host $swarmInitResult
-        Write-Host $swarmInitErr
         return @{
             result = $swarmInitResult
             error = $swarmInitErr
@@ -117,7 +115,9 @@ $returnValue = @{
 switch($args.state){
     "present" {
         if((Get-State).swarm_active -eq $false) {
-            $returnValue.initialize_result = Initialize-Swarm
+            $initResult = Initialize-Swarm
+            $module.Result.result = $initResult
+            $returnValue.initialize_result = "testing"
         }
     }
 }
