@@ -68,7 +68,7 @@ function Initialize-Swarm {
     }
 
     try {
-        docker swarm init $($argumentsToAdd -join " ") -ErrorVariable swarmInitErr -OutVariable swarmInitResult
+        $swarmInitResult = docker swarm init $($argumentsToAdd -join " ") -ErrorVariable swarmInitErr -OutVariable swarmInitResult
     }
     catch {}
     return @{
