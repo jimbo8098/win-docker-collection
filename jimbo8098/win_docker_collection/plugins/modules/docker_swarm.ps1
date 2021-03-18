@@ -54,6 +54,7 @@ function Get-State() {
     }
 
     $retSwarmStateOutput = docker info -f '{{json .Swarm.LocalNodeState}}'
+    $status.info = $retSwarmStateOutput
     switch($retSwarmStateOutput)
     {
         'inactive'
