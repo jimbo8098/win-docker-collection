@@ -69,20 +69,31 @@ function Initialize-Swarm {
 
     try {
         Invoke-Expression -Command "docker swarm init $($argumentsToAdd -join " ")" -ErrorVariable swarmInitErr -OutVariable swarmInitResult
-        $module.Debug($swarmInitResult)
-        $module.Debug($swarmInitErr)
         return @{
-            result = $NULL
-            error = $NULL
+            status = "success"
         }
     }
     catch{
         $module.Debug("About to initialize ===============================================")
-        $module.Debug($swarmInitResult)
-        $module.Debug($swarmInitErr)
-        return @{
-            result = $NULL
-            error = $NULL
+        if($swarmInitErr)
+        {
+            switch -Wildcard ($swarmInitErr)
+            {
+                "*could not find the system's IP address - specify one with --advertise-addr*" {
+                    return @{
+                        status = "error"
+                        error = "Couldn't find system's IP address automatically. Define advertise_addr."
+                    }
+                }
+                default {
+                    return @{
+                        status = "error"
+                        error = "An unknown error occurred"
+                        stderr = $swarmInitErr
+                        stdout = $swarmInitResult
+                    }
+                }
+            }
         }
     }
 }
