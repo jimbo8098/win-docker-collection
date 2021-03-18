@@ -124,24 +124,6 @@ function Get-State() {
     return $status
 }
 
-function Write-AnsibleOutput {
-    param([hashtable] $output)
-    $module.Result.values.init_result = $output
-    switch($output.state){
-        "error" {
-            $module.FailJson($output.message,@{
-                stdout = $output.stdout
-                stderr = $output.stderr
-            })
-            break;
-        }
-        "success" {
-            $module.ExitJson()
-            break;
-        }
-    }
-}
-
 $returnValue = @{
     before = Get-State
 }
@@ -149,10 +131,23 @@ switch($args.state){
     "present" {
         if((Get-State).swarm_active -eq $false) {
             $initResult = Initialize-Swarm
-            Write-AnsibleOutput $initResult
+            $output = $initResult
         }
     }
 }
 $returnValue.after = Get-State
 
-Write-AnsibleOutput @{state = "success"}
+
+switch($output.state){
+    "error" {
+        $module.FailJson($output.message,@{
+            stdout = $output.stdout
+            stderr = $output.stderr
+        })
+        break;
+    }
+    "success" {
+        $module.ExitJson()
+        break;
+    }
+}
