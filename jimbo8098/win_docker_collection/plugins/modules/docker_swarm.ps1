@@ -126,15 +126,18 @@ function Get-State() {
 
 function Write-AnsibleOutput {
     param([hashtable] $output)
+    $module.Result.values.init_result = $output
     switch($output.state){
         "error" {
             $module.FailJson($output.message,@{
                 stdout = $output.stdout
                 stderr = $output.stderr
             })
+            break;
         }
         "success" {
             $module.ExitJson()
+            break;
         }
     }
 }
@@ -152,5 +155,4 @@ switch($args.state){
 }
 $returnValue.after = Get-State
 
-$module.Result.values = $returnValue
 Write-AnsibleOutput @{state = "success"}
