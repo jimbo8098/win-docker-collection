@@ -77,12 +77,12 @@ function Initialize-Swarm {
 
         if($swarmInitErr)
         {
-            switch -Wildcard ($swarmInitErr)
+            <#switch -Wildcard ($swarmInitErr)
             {
-                #"*could not find the system's IP address - specify one with --advertise-addr*" {
-                #    $module.FailJson("Couldn't find system's IP address automatically. Define advertise_addr.")
-                #}
-            }
+                "*could not find the system's IP address - specify one with --advertise-addr*" {
+                    $module.FailJson("Couldn't find system's IP address automatically. Define advertise_addr.")
+                }
+            } #>
         }
         $module.Debug(@"
         An unhandled error occurred whilst initializing the swarm.
