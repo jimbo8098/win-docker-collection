@@ -1,0 +1,22 @@
+windows:
+  children:
+    vagrant01:
+      ansible_host: 127.0.0.1
+  vars:
+    ansible_user: vagrant
+    ansible_password: vagrant
+    ansible_port: 55986
+    ansible_connection: winrm
+    ansible_winrm_transport: ntlm
+    ansible_winrm_server_cert_validation: ignore
+
+    install_docker: false
+    advertise_addr: "10.0.1.20"
+    listen_addr: "10.0.1.20"
+
+  children:
+    manager:
+      hosts:
+        manager1:
+          ansible_host: 127.0.0.1
+
