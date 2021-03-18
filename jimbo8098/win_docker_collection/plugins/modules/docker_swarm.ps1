@@ -80,7 +80,7 @@ function Initialize-Swarm {
             switch -Wildcard ($swarmInitErr)
             {
                 "*could not find the system's IP address - specify one with --advertise-addr*" {
-                    $module.FailJson("Couldn't find system's IP address automatically. Define advertise_addr.",$_)
+                    $module.FailJson("Couldn't find system's IP address automatically. Define advertise_addr.")
                 }
             }
         }
