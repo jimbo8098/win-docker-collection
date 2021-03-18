@@ -3,6 +3,12 @@
   roles:
     - windows-docker-role
   tasks:
+
+    - name: Docker role
+      import_role:
+        name: windows-docker-role
+      when: install_docker
+
     - name: Ping test
       jimbo8098.win_docker_collection.win_ping_test:
 
