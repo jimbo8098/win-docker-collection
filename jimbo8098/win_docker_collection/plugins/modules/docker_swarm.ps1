@@ -67,7 +67,7 @@ function Initialize-Swarm {
         $argumentsToAdd += "--force-new-cluster"
     }
 
-    $swarmInitResult = docker swarm init $($argumentsToAdd -join " ") -ErrorAction SilentlyContinue -ErrorVariable swarmInitErr
+    Invoke-Expression -Command "docker swarm init $($argumentsToAdd -join " ")" -ErrorAction SilentlyContinue -ErrorVariable swarmInitErr -OutVariable swarmInitResult
     return @{
         result = $swarmInitResult
         error = $swarmInitErr
