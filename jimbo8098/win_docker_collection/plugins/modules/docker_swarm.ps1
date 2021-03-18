@@ -96,7 +96,9 @@ function Get-State() {
     return $status
 }
 
-$module.Result.values.args = $module.Arguments
+$module.Result.values = @{
+    args = $module.Arguments
+    state = Get-State
+}
 
-$module.Result.values.state = Get-State
 $module.ExitJson()
