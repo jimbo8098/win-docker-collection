@@ -52,8 +52,8 @@ function Initialize-Swarm {
     param(
         [string] $advertise_addr = $NULL,
         [string] $listen_addr = $NULL,
-        [bool] $force_new_cluster = $NULL,
-        [hashtable] $swarm_spec = $NULL
+        [bool] $force_new_cluster = $false,
+        [hashtable] $swarm_spec = @{}
     )
 
     $argumentsToAdd = @();
