@@ -63,6 +63,7 @@ Vagrant.configure("2") do |config|
     ansible.playbook = "main.yml"
     ansible.inventory_path = "inventory.yml"
     ansible.limit = "all"
+    ansible.verbose = "-vvv"
   end
 
   # Enable provisioning with a shell script. Additional provisioners such as
