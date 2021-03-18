@@ -50,10 +50,10 @@ $args = $module.Params
 
 function Initialize-Swarm {
     param(
-        [string] $advertise_addr,
-        [string] $listen_addr,
-        [bool] $force_new_cluster,
-        [hashtable] $swarm_spec
+        [string] $advertise_addr = $NULL,
+        [string] $listen_addr = $NULL,
+        [bool] $force_new_cluster = $NULL,
+        [hashtable] $swarm_spec = $NULL
     )
 
     $argumentsToAdd = @();
@@ -89,7 +89,7 @@ function Initialize-Swarm {
 }
 
 
-function Write-AnsibleUnhandledException ([string] $out, [string] $err, [string] $mess){
+function Write-AnsibleUnhandledException ([string] $out = $NULL, [string] $err = $NULL, [string] $mess = $NULL){
     $module.Debug(@"
     ${mess}
 
