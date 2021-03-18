@@ -11,36 +11,36 @@ $spec = @{
         autolock_managers = @{ type = "bool" }
         ca_cert = @{ type = "str" }
         ca_force_rotate = @{ type = "int" }
-        client_cert = @{ type = "string" }
-        client_key = @{ type = "string" }
+        client_cert = @{ type = "str" }
+        client_key = @{ type = "str" }
         debug = @{ type = "bool" }
         default_addr_pool = @{ type = "array" }
         dispatcher_heartbeat_period = @{ type = "int" }
-        docker_host = @{ type = "string" }
+        docker_host = @{ type = "str" }
         election_tick = @{ type = "int" }
         force = @{ type = "bool" }
         heartbeat_tick = @{ type = "int" }
-        join_token = @{ type = "string" }
+        join_token = @{ type = "str" }
         keep_old_snapshots = @{ type = "int" }
         labels = @{ type = "array" }
-        listen_addr = @{ type = "string" }
+        listen_addr = @{ type = "str" }
         log_entries_for_slow_followers = @{ type = "int" }
-        name = @{ type = "string" }
+        name = @{ type = "str" }
         node_cert_expiry = @{ type = "int" }
-        node_id = @{ type = "string" }
+        node_id = @{ type = "str" }
         remote_addrs = @{ type = "array" }
         rotate_manager_token = @{ type = "bool" }
         rotate_worker_token = @{ type = "bool" }
-        signing_ca_cert = @{ type = "string" }
-        signing_ca_key = @{ type = "string" }
+        signing_ca_cert = @{ type = "str" }
+        signing_ca_key = @{ type = "str" }
         snapshot_interval = @{ type = "int" }
-        ssl_version = @{ type = "string" }
-        state = @{ type = "string"; choices = "absent","present","join","remove" }
+        ssl_version = @{ type = "str" }
+        state = @{ type = "str"; choices = "absent","present","join","remove" }
         subnet_size = @{ type = "int" }
         task_history_retention_limit = @{ type = "int" }
         timeout = @{ type = "int" }
         tls = @{ type = "bool" }
-        tls_hostname = @{ type = "string" }
+        tls_hostname = @{ type = "str" }
         validate_certs = @{ type = "bool" }
     }
 }
