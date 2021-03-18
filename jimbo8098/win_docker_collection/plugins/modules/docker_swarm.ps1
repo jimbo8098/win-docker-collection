@@ -47,6 +47,25 @@ $spec = @{
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
 
+function Get-State() {
+    param()
+    $status = @{
+        swarm_active = $NULL
+    }
+
+    $retSwarmStateOutput = docker info -f '{{json .Swarm.LocalNodeState}}'
+    switch($retSwarmStateOutput)
+    {
+        'inactive'
+        {
+            $status.swarm_active = $false;
+        }
+        'active'
+        {
+            $status.swarm_active = $true;
+        }
+    }
+}
 
 $module.Result.values = @{}
 $module.ExitJson()
