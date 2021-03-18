@@ -58,11 +58,17 @@ function Get-State() {
     {
         'inactive'
         {
-            $status.swarm_active = $false;
+            $status.swarm_active = $false
+            break
         }
         'active'
         {
-            $status.swarm_active = $true;
+            $status.swarm_active = $true
+            break
+        }
+        default 
+        {
+            $status.swarm_active = "unknown"
         }
     }
     return $status
