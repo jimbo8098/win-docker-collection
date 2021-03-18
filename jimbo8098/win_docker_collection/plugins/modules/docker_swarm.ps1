@@ -97,7 +97,7 @@ function Get-State() {
 }
 
 $module.Result.values = @{
-    args = $module.Arguments
+    args = $module.Params
     state = Get-State
 }
 
