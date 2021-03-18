@@ -145,7 +145,8 @@ $returnValue = @{
 switch($args.state){
     "present" {
         if((Get-State).swarm_active -eq $false) {
-            Write-AnsibleOutput Initialize-Swarm
+            $initResult = Initialize-Swarm
+            Write-AnsibleOutput $initResult
         }
     }
 }
