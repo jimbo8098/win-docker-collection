@@ -97,16 +97,18 @@ function Get-State() {
     return $status
 }
 
+$returnValue = @{
+    before = Get-State
+}
 switch($args.state){
     "present" {
         if((Get-State).swarm_active -eq $false) {
-            Initialize-Swarm
+            $returnValue.initialize_result = Initialize-Swarm
         }
     }
 }
+$returnValue.after = Get-State
 
-$module.Result.values = @{
-    state = Get-State
-}
+$module.Result.values = $returnValue
 
 $module.ExitJson()
