@@ -1,7 +1,5 @@
 - hosts: all
   gather_facts: false
-  roles:
-    - windows-docker-role
   tasks:
 
     - name: Docker role
