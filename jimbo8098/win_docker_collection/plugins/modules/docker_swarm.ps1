@@ -1,3 +1,7 @@
+#!powershell
+
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
 #AnsibleRequires -CSharpUtil Ansible.Basic
 
 $spec = @{
@@ -43,7 +47,8 @@ $spec = @{
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
 
-$dockerCli = "C:\Program Files\Docker\docker.exe"
+#$dockerCli = "C:\Program Files\Docker\docker.exe"
+<#
 function Initialize-Swarm {
     param(
         $advertise_addr,
@@ -53,6 +58,7 @@ function Initialize-Swarm {
     $module. "${dockerCli} swarm init --advertise-addr ${advertise_addr} --listen-addr ${listen_addr}"
 
 }
+
 
 function Get-State {
     param()
@@ -83,9 +89,9 @@ function Get-State {
         except APIError:
             return
     #>
-}
+#}
 
-$stateBefore = Get-State
+#$stateBefore = Get-State
 $module.Result.values = @{}
 $module.ExitJson()
 
