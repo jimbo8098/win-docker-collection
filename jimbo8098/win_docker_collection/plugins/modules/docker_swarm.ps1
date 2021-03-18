@@ -77,23 +77,28 @@ function Initialize-Swarm {
 
         if($swarmInitErr)
         {
-            <#switch -Wildcard ($swarmInitErr)
+            switch -Wildcard ($swarmInitErr)
             {
                 "*could not find the system's IP address - specify one with --advertise-addr*" {
                     $module.FailJson("Couldn't find system's IP address automatically. Define advertise_addr.")
                 }
-            } #>
+            }
         }
-        $module.Debug(@"
-        An unhandled error occurred whilst initializing the swarm.
+        Write-AnsibleUnhandledException -out $swarmInitResult -err $swarmInitErr -mess "An unhandled error occurred whilst initializing the swarm."
+    }
+}
 
-        STDOUT: ${swarmInitResult}
 
-        STDERR: ${swarmInitErr}
+function Write-AnsibleUnhandledException ([string] $out, [string] $err, [string] $mess){
+    $module.Debug(@"
+    ${mess}
+
+    STDOUT: ${out}
+
+    STDERR: ${err}
 "@)
 
-        $module.FailJson("An unhandled error occurred")
-    }
+    $module.FailJson("An unhandled error occurred. Check Event Log for more information.")
 }
 
 function Get-State() {
@@ -129,7 +134,7 @@ $returnValue = @{
 switch($args.state){
     "present" {
         if((Get-State).swarm_active -eq $false) {
-            $initResult = Initialize-Swarm
+            $initResult = Initialize-Swarm -advertise_addr $args.advertise_addr -listen_addr $args.listen_addr -force_new_cluster $args.force_new_cluster
         }
     }
 }
