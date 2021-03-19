@@ -92,6 +92,17 @@ function Initialize-Swarm {
     }
 }
 
+function Leave-Swarm {
+    if($module.Result.before.managers -eq 1 && $module.Result.before.isManager -eq $true)
+    {
+        try {
+            docker swarm leave -f
+        } catch {
+            Write-AnsibleException -mess "Error while leaving swarm" -err $_
+        }
+    }
+}
+
 
 function Write-AnsibleException ([string] $err = $NULL, [string] $mess = $NULL){
     $module.Debug(@"
@@ -131,6 +142,16 @@ function Get-State() {
             $status.swarm_active = $true
             $status.node_addr = $jsonInfo.Swarm.NodeAddr
             $status.cluster_id = $jsonInfo.Swarm.Cluster.ID
+            $status.nodes = $jsonInfo.Swarm.Nodes
+            $status.managers = $jsonInfo.Swarm.Managers
+            $status.isManager = $false
+            foreach($manager in $jsonInfo.Swarm.RemoteManagers)
+            {
+                if($manager.NodeID -eq $jsonInfo.Swarm.NodeID)
+                {
+                    $status.isManager = $true
+                }
+            }
             break
         }
         default 
@@ -145,12 +166,17 @@ function Get-State() {
 $module.Result.before = Get-State
 switch($args.state){
     "present" {
-        if((Get-State).swarm_active -eq $false) {
+        if($module.Result.before.swarm_active -eq $false) {
             Initialize-Swarm -initargs @{
                 advertise_addr = $args.advertise_addr
                 listen_addr = $args.listen_addr
                 force_new_cluster = $args.force_new_cluster
             }
+        }
+    }
+    "absent" {
+        if($module.Result.before.swarm_active -eq $true) {
+            Leave-Swarm
         }
     }
 }
