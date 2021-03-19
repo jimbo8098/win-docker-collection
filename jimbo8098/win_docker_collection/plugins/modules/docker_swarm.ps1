@@ -75,7 +75,7 @@ function Initialize-Swarm {
     }
     catch{
 
-        if($swarmInitErr)
+        <#if($swarmInitErr)
         {
             switch -Wildcard ($swarmInitErr)
             {
@@ -89,7 +89,7 @@ function Initialize-Swarm {
                     $module.FailJson("Failed to listen on remote API address",$err)
                 }
             }
-        }
+        }#>
         Write-AnsibleUnhandledException -out $swarmInitResult -err $_ -mess "An unhandled error occurred whilst initializing the swarm."
     }
 }
