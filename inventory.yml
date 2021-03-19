@@ -11,8 +11,8 @@ windows:
     ansible_winrm_server_cert_validation: ignore
 
     install_docker: false
-    advertise_addr: "10.0.1.20"
-    listen_addr: "10.0.1.20"
+    advertise_addr: "10.0.1.15"
+    listen_addr: "10.0.1.15"
 
   children:
     manager:
