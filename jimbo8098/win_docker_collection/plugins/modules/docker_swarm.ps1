@@ -79,6 +79,9 @@ function Initialize-Swarm {
                 "*could not find the system's IP address - specify one with --advertise-addr*" {
                     $module.FailJson("Couldn't find system's IP address automatically. Define advertise_addr.")
                 }
+                "*advertise address must be a non-zero IP address or network interface (with optional port number)*"{
+                    $module.FailJson("advertise_addr must be a non-zero IP address or network interface (with optional port number)")
+                }
             }
         }
         Write-AnsibleUnhandledException -out $swarmInitResult -err $swarmInitErr -mess "An unhandled error occurred whilst initializing the swarm."
@@ -127,12 +130,11 @@ function Get-State() {
 
 $returnValue = @{
     before = Get-State
-    args = $args
 }
 switch($args.state){
     "present" {
         if((Get-State).swarm_active -eq $false) {
-            $initResult = Initialize-Swarm @{
+            $initResult = Initialize-Swarm -initargs @{
                 advertise_addr = $args.advertise_addr
                 listen_addr = $args.listen_addr
                 force_new_cluster = $args.force_new_cluster
