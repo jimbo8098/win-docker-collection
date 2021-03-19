@@ -109,6 +109,8 @@ function Get-State() {
     param()
     $status = @{
         swarm_active = $NULL
+        node_addr = $NULL
+        cluster_id = $NULL
     }
 
     try {
@@ -117,8 +119,7 @@ function Get-State() {
         Write-AnsibleException -err $_ -mess "An error occcurred whilst checking the docker swarm status"
     }
 
-    $module.Result.info = $jsonInfo
-    switch($retSwarmStateOutput)
+    switch($jsonInfo.Swarm.LocalNodeState)
     {
         '"inactive"'
         {
@@ -128,11 +129,13 @@ function Get-State() {
         '"active"'
         {
             $status.swarm_active = $true
+            $status.node_addr = $jsonInfo.Swarm.NodeAddr
+            $status.cluster_id = $jsonInfo.Swarm.Cluster.ID
             break
         }
         default 
         {
-            $status.swarm_active = "unknown"
+            Write-AnsibleException -mess "Unable to determine swarm state"
         }
     }
     return $status
