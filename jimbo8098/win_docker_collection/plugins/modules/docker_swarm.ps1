@@ -55,15 +55,15 @@ function Initialize-Swarm {
 
     $module.Debug($initargs.advertise_addr)
 
-    $argumentsToAdd = @();
+    $argumentsToAdd = [System.Collections.ArrayList]@();
     if($initargs.advertise_addr -ne ""){
-        $argumentsToAdd += "--advertise-addr '${initargs.advertise_addr}'"
+        $argumentsToAdd.Add("--advertise-addr '${initargs.advertise_addr}'")
     }
     if($initargs.listen_addr -ne "") {
-        $argumentsToAdd += "--listen-addr '${initargs.listen_addr}'"
+        $argumentsToAdd.Add("--listen-addr '${initargs.listen_addr}'")
     }
     if($initargs.force_new_cluster -ne "") {
-        $argumentsToAdd += "--force-new-cluster"
+        $argumentsToAdd.Add("--force-new-cluster")
     }
 
     $module.Debug(($argumentsToAdd | Format-List))
