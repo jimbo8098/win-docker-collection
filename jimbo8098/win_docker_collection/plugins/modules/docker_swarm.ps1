@@ -183,8 +183,8 @@ switch($args.state){
     }
     "absent" {
         if($module.Result.before.swarm_active -eq $true) {
-            $result = Exit-Swarm
-            if($result -ne $true) {
+            $exitResult = Exit-Swarm
+            if($exitResult -ne $true) {
                 Write-AnsibleException -mess "The docker swarm leave operation didn't exit as expected" 
             }
         }
