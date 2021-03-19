@@ -117,7 +117,7 @@ function Get-State() {
         Write-AnsibleException -err $_ -mess "An error occcurred whilst checking the docker swarm status"
     }
 
-    $module.Result.info = $jsonInfo
+    $module.Result.info = $jsonInfo | ConvertFrom-Json
     switch($retSwarmStateOutput)
     {
         '"inactive"'
