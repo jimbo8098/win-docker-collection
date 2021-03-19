@@ -93,12 +93,21 @@ function Initialize-Swarm {
 }
 
 function Exit-Swarm {
+    #The message expected in STDOUT after docker swarm leave is run
+    $successfulLeaveMessage = "Node left the swarm..."
     if($module.Result.before.managers -eq 1 -And $module.Result.before.isManager -eq $true)
     {
         try {
-            docker swarm leave -f
+            Invoke-Expression -Command "docker swarm leave -f" -ErrorVariable swarmExitErr -OutVariable swarmExitRes
+            if($swarmExitRes -contains $successfulLeaveMessage)
+            {
+                return $true
+            } else {
+                $module.Debug("The docker swarm leave operation didn't provide the expected output. Expected ""${successfulLeaveMessage}"" received ""${swarmExitRes}""")
+                return $false
+            }
         } catch {
-            Write-AnsibleException -mess "Error while leaving swarm" -err $_
+            Write-AnsibleException -mess "Error while leaving swarm" -err $swarmExitErr
         }
     }
 }
@@ -107,8 +116,6 @@ function Exit-Swarm {
 function Write-AnsibleException ([string] $err = $NULL, [string] $mess = $NULL){
     $module.Debug(@"
     ${mess}
-
-    STDOUT: ${out}
 
     STDERR: ${err}
 "@)
@@ -176,7 +183,10 @@ switch($args.state){
     }
     "absent" {
         if($module.Result.before.swarm_active -eq $true) {
-            Exit-Swarm
+            $result = Exit-Swarm
+            if($result -ne $true) {
+                Write-AnsibleException -mess "The docker swarm leave operation didn't exit as expected" 
+            }
         }
     }
 }
