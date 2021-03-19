@@ -15,11 +15,11 @@
         advertise_addr: '{{ advertise_addr }}'
         listen_addr: '{{ listen_addr }}'
         state: present
-      async: 60
+      async: 80
       poll: 5
 
     - name: Test module leave
       jimbo8098.win_docker_collection.docker_swarm:
         state: absent
-      async: 45
+      async: 80
       poll: 5
