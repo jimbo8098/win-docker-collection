@@ -93,7 +93,7 @@ function Initialize-Swarm {
 }
 
 function Leave-Swarm {
-    if($module.Result.before.managers -eq 1 && $module.Result.before.isManager -eq $true)
+    if($module.Result.before.managers -eq 1 -And $module.Result.before.isManager -eq $true)
     {
         try {
             docker swarm leave -f
