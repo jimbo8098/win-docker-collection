@@ -57,15 +57,16 @@ function Initialize-Swarm {
 
     $argumentsToAdd = @();
     if($initargs.advertise_addr -ne ""){
-        $argumentsToAdd += "--advertise-addr ${initargs.advertise_addr}"
+        $argumentsToAdd += "--advertise-addr '${initargs.advertise_addr}'"
     }
     if($initargs.listen_addr -ne "") {
-        $argumentsToAdd += "--listen-addr ${initargs.listen_addr}"
+        $argumentsToAdd += "--listen-addr '${initargs.listen_addr}'"
     }
     if($initargs.force_new_cluster -ne "") {
         $argumentsToAdd += "--force-new-cluster"
     }
 
+    $module.Debug(($argumentsToAdd | Format-List))
     try {
         Invoke-Expression -Command "docker swarm init $($argumentsToAdd -join " ")" -ErrorVariable swarmInitErr -OutVariable swarmInitResult
         return @{
