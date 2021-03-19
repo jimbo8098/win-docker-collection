@@ -57,10 +57,10 @@ function Initialize-Swarm {
 
     $argumentsToAdd = [System.Collections.ArrayList]@();
     if($initargs.advertise_addr -ne ""){
-        $argumentsToAdd.Add("--advertise-addr '${initargs.advertise_addr}'")
+        $argumentsToAdd.Add('--advertise-addr "{0}"' -f $initargs.advertise_addr)
     }
     if($initargs.listen_addr -ne "") {
-        $argumentsToAdd.Add("--listen-addr '${initargs.listen_addr}'")
+        $argumentsToAdd.Add('--listen-addr "{0}"' -f $initargs.advertise_addr)
     }
     if($initargs.force_new_cluster -ne "") {
         $argumentsToAdd.Add("--force-new-cluster")
