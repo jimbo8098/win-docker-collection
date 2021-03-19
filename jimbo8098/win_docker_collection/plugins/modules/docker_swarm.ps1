@@ -135,8 +135,8 @@ function Get-State() {
         }
         default 
         {
-            $status.swarm_active = "$($jsonInfo.Swarm.LocalNodeState)"
-            #Write-AnsibleException -mess "Unable to determine swarm state"
+            #$status.swarm_active = "$($jsonInfo.Swarm.LocalNodeState)"
+            Write-AnsibleException -mess "Unable to determine swarm state"
         }
     }
     return $status
