@@ -75,27 +75,27 @@ function Initialize-Swarm {
     }
     catch{
 
-        <#if($swarmInitErr)
+        if($swarmInitErr)
         {
             switch -Wildcard ($swarmInitErr)
             {
                 "*could not find the system's IP address - specify one with --advertise-addr*" {
-                    $module.FailJson("Couldn't find system's IP address automatically. Define advertise_addr.")
+                    Write-AnsibleException -err $_ -mess "Couldn't find system's IP address automatically. Define advertise_addr."
                 }
                 "*advertise address must be a non-zero IP address or network interface (with optional port number)*"{
-                    $module.FailJson("advertise_addr must be a non-zero IP address or network interface (with optional port number)")
+                    Write-AnsibleException -err $_ -mess "advertise_addr must be a non-zero IP address or network interface (with optional port number)"
                 }
                 "*failed to listen on remote API address: listen tcp 10.0.1.15:2377: bind: The requested address is not valid in its context*"{
-                    $module.FailJson("Failed to listen on remote API address",$err)
+                    Write-AnsibleException -err $_ -mess "Failed to listen on remote API address",$err
                 }
             }
-        }#>
-        Write-AnsibleUnhandledException -out $swarmInitResult -err $_ -mess "An unhandled error occurred whilst initializing the swarm."
+        }
+        Write-AnsibleException -err $_ -mess "An unhandled error occurred whilst initializing the swarm."
     }
 }
 
 
-function Write-AnsibleUnhandledException ([string] $out = $NULL, [string] $err = $NULL, [string] $mess = $NULL){
+function Write-AnsibleException ([string] $err = $NULL, [string] $mess = $NULL){
     $module.Debug(@"
     ${mess}
 
