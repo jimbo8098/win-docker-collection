@@ -53,7 +53,7 @@ function Initialize-Swarm {
         [hashtable] $initargs
     )
 
-    $module.Debug($initargs)
+    $module.Debug($initargs.advertise_addr)
 
     $argumentsToAdd = @();
     if($initargs.advertise_addr -ne ""){
