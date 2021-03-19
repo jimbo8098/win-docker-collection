@@ -86,7 +86,7 @@ function Initialize-Swarm {
                     Write-AnsibleException -err $_ -mess "advertise_addr must be a non-zero IP address or network interface (with optional port number)"
                 }
                 "*failed to listen on remote API address: listen tcp 10.0.1.15:2377: bind: The requested address is not valid in its context*"{
-                    Write-AnsibleException -err $_ -mess "Failed to listen on remote API address",$err
+                    Write-AnsibleException -err $_ -mess "Failed to listen on remote API address"
                 }
             }
         }
