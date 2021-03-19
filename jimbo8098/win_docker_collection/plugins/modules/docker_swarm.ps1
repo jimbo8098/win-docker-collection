@@ -92,7 +92,7 @@ function Initialize-Swarm {
     }
 }
 
-function Leave-Swarm {
+function Exit-Swarm {
     if($module.Result.before.managers -eq 1 -And $module.Result.before.isManager -eq $true)
     {
         try {
@@ -176,7 +176,7 @@ switch($args.state){
     }
     "absent" {
         if($module.Result.before.swarm_active -eq $true) {
-            Leave-Swarm
+            Exit-Swarm
         }
     }
 }
