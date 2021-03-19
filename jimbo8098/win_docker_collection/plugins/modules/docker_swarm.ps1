@@ -121,12 +121,12 @@ function Get-State() {
 
     switch($jsonInfo.Swarm.LocalNodeState)
     {
-        '"inactive"'
+        'inactive'
         {
             $status.swarm_active = $false
             break
         }
-        '"active"'
+        'active'
         {
             $status.swarm_active = $true
             $status.node_addr = $jsonInfo.Swarm.NodeAddr
