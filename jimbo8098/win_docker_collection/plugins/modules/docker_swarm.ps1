@@ -138,9 +138,7 @@ function Get-State() {
     return $status
 }
 
-$returnValue = @{
-    before = Get-State
-}
+$module.Result.before = Get-State
 switch($args.state){
     "present" {
         if((Get-State).swarm_active -eq $false) {
@@ -152,6 +150,5 @@ switch($args.state){
         }
     }
 }
-$returnValue.after = Get-State
-$module.Result = $returnValue
+$module.Result.after = Get-State
 $module.ExitJson()
