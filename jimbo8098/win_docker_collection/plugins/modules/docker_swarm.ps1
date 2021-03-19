@@ -104,7 +104,7 @@ function Write-AnsibleException ([string] $err = $NULL, [string] $mess = $NULL){
     STDERR: ${err}
 "@)
 
-    $module.FailJson("An unhandled error occurred. Check Event Log for more information.",$err)
+    $module.FailJson($mess,$err)
 }
 
 function Get-State() {
