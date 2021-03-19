@@ -85,6 +85,9 @@ function Initialize-Swarm {
                 "*advertise address must be a non-zero IP address or network interface (with optional port number)*"{
                     $module.FailJson("advertise_addr must be a non-zero IP address or network interface (with optional port number)")
                 }
+                "*failed to listen on remote API address: listen tcp 10.0.1.15:2377: bind: The requested address is not valid in its context*"{
+                    $module.FailJson("Failed to listen on remote API address",$err)
+                }
             }
         }
         Write-AnsibleUnhandledException -out $swarmInitResult -err $swarmInitErr -mess "An unhandled error occurred whilst initializing the swarm."
@@ -101,7 +104,7 @@ function Write-AnsibleUnhandledException ([string] $out = $NULL, [string] $err =
     STDERR: ${err}
 "@)
 
-    $module.FailJson("An unhandled error occurred. Check Event Log for more information.")
+    $module.FailJson("An unhandled error occurred. Check Event Log for more information.",$err)
 }
 
 function Get-State() {
