@@ -90,7 +90,7 @@ function Initialize-Swarm {
                 }
             }
         }
-        Write-AnsibleUnhandledException -out $swarmInitResult -err $swarmInitErr -mess "An unhandled error occurred whilst initializing the swarm."
+        Write-AnsibleUnhandledException -out $swarmInitResult -err $_ -mess "An unhandled error occurred whilst initializing the swarm."
     }
 }
 
