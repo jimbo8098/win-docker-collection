@@ -10,8 +10,12 @@
     - name: Ping test
       jimbo8098.win_docker_collection.win_ping_test:
 
-    - name: Test module
+    - name: Test module Join
       jimbo8098.win_docker_collection.docker_swarm:
         advertise_addr: '{{ advertise_addr }}'
         listen_addr: '{{ listen_addr }}'
         state: present
+
+    - name: Test module leave
+      jimbo8098.win_docker_collection.docker_swarm:
+        state: absent
