@@ -127,6 +127,7 @@ function Get-State() {
 
 $returnValue = @{
     before = Get-State
+    args = $args
 }
 switch($args.state){
     "present" {
