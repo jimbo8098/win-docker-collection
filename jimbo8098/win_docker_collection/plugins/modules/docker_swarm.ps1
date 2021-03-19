@@ -75,7 +75,7 @@ function Initialize-Swarm {
 
         if($swarmInitErr)
         {
-            switch -Wildcard ($swarmInitErr)
+            switch -Regex ($swarmInitErr)
             {
                 "*could not find the system's IP address - specify one with --advertise-addr*" {
                     Write-AnsibleException -err $_ -mess "Couldn't find system's IP address automatically. Define advertise_addr."
@@ -83,7 +83,7 @@ function Initialize-Swarm {
                 "*advertise address must be a non-zero IP address or network interface (with optional port number)*"{
                     Write-AnsibleException -err $_ -mess "advertise_addr must be a non-zero IP address or network interface (with optional port number)"
                 }
-                "*failed to listen on remote API address: listen tcp 10.0.1.15:2377: bind: The requested address is not valid in its context*"{
+                "*failed to listen on remote API address: listen tcp [1-9.:]*: bind: The requested address is not valid in its context*"{
                     Write-AnsibleException -err $_ -mess "Failed to listen on remote API address"
                 }
             }
