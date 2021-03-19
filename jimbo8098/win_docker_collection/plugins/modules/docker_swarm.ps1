@@ -149,3 +149,4 @@ switch($args.state){
     }
 }
 $returnValue.after = Get-State
+$module.ExitJson()
