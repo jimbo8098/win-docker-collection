@@ -69,9 +69,7 @@ function Initialize-Swarm {
     $module.Debug(($argumentsToAdd))
     try {
         Invoke-Expression -Command "docker swarm init $($argumentsToAdd -join " ")" -ErrorVariable swarmInitErr -OutVariable swarmInitResult
-        return @{
-            status = "success"
-        }
+        return "success"
     }
     catch{
 
@@ -91,18 +89,6 @@ function Initialize-Swarm {
             }
         }
         Write-AnsibleException -err $_ -mess "An unhandled error occurred whilst initializing the swarm."
-    }
-}
-
-function Get-DockerInfoFacet {
-    param(
-        [string] $path
-    )
-
-    try {
-        return (docker info -f "{{json ${path}}}")
-    } catch {
-        Write-AnsibleException -err $_ -mess "An error occurred while retrieving an info facet at '${path}'."
     }
 }
 
@@ -126,10 +112,12 @@ function Get-State() {
     }
 
     try {
-        $retSwarmStateOutput = Get-DockerInfoFacet -path '.Swarm.LocalNodeState'
+        $jsonInfo = docker info -f '{{json .}}'
     } catch {
         Write-AnsibleException -err $_ -mess "An error occcurred whilst checking the docker swarm status"
     }
+
+    $module.Result.info = $jsonInfo
     switch($retSwarmStateOutput)
     {
         '"inactive"'
@@ -156,7 +144,7 @@ $returnValue = @{
 switch($args.state){
     "present" {
         if((Get-State).swarm_active -eq $false) {
-            $initResult = Initialize-Swarm -initargs @{
+            Initialize-Swarm -initargs @{
                 advertise_addr = $args.advertise_addr
                 listen_addr = $args.listen_addr
                 force_new_cluster = $args.force_new_cluster
