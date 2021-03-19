@@ -94,6 +94,18 @@ function Initialize-Swarm {
     }
 }
 
+function Get-DockerInfoFacet {
+    param(
+        [string] $path
+    )
+
+    try {
+        return (docker info -f "{{json ${path}}}")
+    } catch {
+        Write-AnsibleException -err $_ -mess "An error occurred while retrieving an info facet at '${path}'."
+    }
+}
+
 
 function Write-AnsibleException ([string] $err = $NULL, [string] $mess = $NULL){
     $module.Debug(@"
@@ -113,7 +125,11 @@ function Get-State() {
         swarm_active = $NULL
     }
 
-    $retSwarmStateOutput = docker info -f '{{json .Swarm.LocalNodeState}}'
+    try {
+        $retSwarmStateOutput = Get-DockerInfoFacet -path '.Swarm.LocalNodeState'
+    } catch {
+        Write-AnsibleException -err $_ -mess "An error occcurred whilst checking the docker swarm status"
+    }
     switch($retSwarmStateOutput)
     {
         '"inactive"'
